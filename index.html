@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Odin Rock Paper Scissors Console</title>
+  </head>
+  <body>
+    <script>
+      function getComputerChoice() {
+        const options = ["Rock", "Paper", "Scissors"];
+        const choice = options[Math.floor(Math.random() * options.length)];
+        return choice;
+      }
+
+      function playRound(playerSelection, computerSelection) {
+        let input = prompt("Enter: Rock, Paper, Scissors: ").toLowerCase();
+        input = input.charAt(0).toUpperCase() + input.slice(1);
+        let computer = getComputerChoice();
+        console.log(computer);
+        console.log(input);
+        if (computer === "Rock" && input === "Rock") {
+          alert("Tied!");
+        }
+        if (computer === "Paper" && input === "Rock") {
+          alert("Paper win, you lose!");
+        }
+        if (computer === "Scissors" && input === "Rock") {
+          alert("Scissors win, you win!");
+        }
+      }
+
+      console.log(playRound());
+    </script>
+  </body>
+</html>
