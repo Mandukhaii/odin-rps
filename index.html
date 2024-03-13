@@ -14,23 +14,68 @@
       }
 
       function playRound(playerSelection, computerSelection) {
-        let input = prompt("Enter: Rock, Paper, Scissors: ").toLowerCase();
+        let input = prompt(
+          "Enter User Input: Rock, Paper, Scissors: "
+        ).toLowerCase();
         input = input.charAt(0).toUpperCase() + input.slice(1);
         let computer = getComputerChoice();
+        let comp_win = false;
+        let my_win = false;
         console.log(computer);
         console.log(input);
-        if (computer === "Rock" && input === "Rock") {
-          alert("Tied!");
+        if (computer === input) {
+          alert(`C: ${computer}, U: ${input}. Tied!`);
         }
-        if (computer === "Paper" && input === "Rock") {
-          alert("Paper win, you lose!");
+        //losing scenario
+        else if (
+          (computer === "Paper" && input === "Rock") ||
+          (computer === "Rock" && input === "Scissors") ||
+          (computer === "Scissors" && input === "Paper")
+        ) {
+          comp_win = true;
+          alert(`C: ${computer}, U: ${input}. You lost`);
         }
-        if (computer === "Scissors" && input === "Rock") {
-          alert("Scissors win, you win!");
+        //winning scenario
+        else if (
+          (computer === "Scissors" && input === "Rock") ||
+          (computer === "Rock" && input === "Paper") ||
+          (computer === "Paper" && input === "Scissors")
+        ) {
+          my_win = true;
+          alert(`C: ${computer}, U: ${input}. You win`);
+        } else {
+          alert("Please provide a valid input! :)");
         }
+        return [comp_win, my_win];
       }
 
-      console.log(playRound());
+      function playGame() {
+        let my_win_count = 0;
+        let comp_win_count = 0;
+
+        for (i = 0; i < 5; i++) {
+          let [comp, user] = playRound();
+
+          if (comp == true) {
+            comp_win_count += 1;
+          }
+          if (user == true) {
+            my_win_count += 1;
+          }
+          alert(
+            `Round ${i + 1} : C = ${comp_win_count} vs U = ${my_win_count}.`
+          );
+        }
+
+        if (comp_win_count > my_win_count) {
+          alert(`C = ${comp_win_count} vs U = ${my_win_count}. You lost!`);
+        } else if (comp_win_count < my_win_count) {
+          alert(`C =  ${comp_win_count} vs U = ${my_win_count}. You win!`);
+        } else {
+          alert(`C = ${comp_win_count} vs U= ${my_win_count}. Tied!`);
+        }
+      }
+      console.log(playGame());
     </script>
   </body>
 </html>
