@@ -4,8 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Odin Rock Paper Scissors Console</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="text">
+      <h2>Play Rock Paper Scissors with a Computer!</h2>
+      <div>5 points to win. Make a selection below:</div>
+    </div>
+
+    <div id="container">
+      <div id="btn=group">
+        <button id="1" value="Rock">Rock</button>
+        <button id="2" value="Paper">Paper</button>
+        <button id="3" value="Scissors">Scissors</button>
+      </div>
+      <div id="results">Result:</div>
+    </div>
+
     <script>
       function getComputerChoice() {
         const options = ["Rock", "Paper", "Scissors"];
@@ -13,27 +28,28 @@
         return choice;
       }
 
-      function playRound() {
-        let input = prompt(
-          "Enter User Input: Rock, Paper, Scissors: "
-        ).toLowerCase();
-        input = input.charAt(0).toUpperCase() + input.slice(1);
+      function playRound(choice) {
+        const result = document.querySelector("#results");
+        const input = choice;
+
         let computer = getComputerChoice();
-        let comp_win = false;
-        let my_win = false;
         console.log(computer);
         console.log(input);
+
+        let comp_win = false;
+        let my_win = false;
+
         if (computer === input) {
-          alert(`C: ${computer}, U: ${input}. Tied!`);
+          result.textContent = `C: ${computer}, U: ${input}. Tied this round! \n`;
         }
         //losing scenario
-        else if (
+        if (
           (computer === "Paper" && input === "Rock") ||
           (computer === "Rock" && input === "Scissors") ||
           (computer === "Scissors" && input === "Paper")
         ) {
+          result.textContent = `C: ${computer}, U: ${input}. You lost this round! \n`;
           comp_win = true;
-          alert(`C: ${computer}, U: ${input}. You lost`);
         }
         //winning scenario
         else if (
@@ -41,10 +57,8 @@
           (computer === "Rock" && input === "Paper") ||
           (computer === "Paper" && input === "Scissors")
         ) {
+          result.textContent = `C: ${computer}, U: ${input}. You win this round! \n`;
           my_win = true;
-          alert(`C: ${computer}, U: ${input}. You win`);
-        } else {
-          alert("Please provide a valid input! :)");
         }
         return [comp_win, my_win];
       }
@@ -53,28 +67,41 @@
         let my_win_count = 0;
         let comp_win_count = 0;
 
-        for (i = 0; i < 5; i++) {
-          let [comp, user] = playRound();
+        const result = document.querySelector("#results");
 
-          if (comp == true) {
-            comp_win_count += 1;
-          }
-          if (user == true) {
-            my_win_count += 1;
-          }
-          alert(
-            `Round ${i + 1} : C = ${comp_win_count} vs U = ${my_win_count}.`
-          );
-        }
+        // buttons is a node list. It looks and acts much like an array.
+        const buttons = document.querySelectorAll("button");
 
-        if (comp_win_count > my_win_count) {
-          alert(`C = ${comp_win_count} vs U = ${my_win_count}. You lost!`);
-        } else if (comp_win_count < my_win_count) {
-          alert(`C =  ${comp_win_count} vs U = ${my_win_count}. You win!`);
-        } else {
-          alert(`C = ${comp_win_count} vs U= ${my_win_count}. Tied!`);
-        }
+        // we use the .forEach method to iterate through each button
+        buttons.forEach((button) => {
+          // and for each one we add a 'click' listener
+          button.addEventListener("click", () => {
+            console.log("TESTING", button.value);
+            let [comp, user] = playRound(button.value);
+            console.log("TESTING RESULTS: ", [comp, user]);
+            if (comp == true) {
+              comp_win_count += 1;
+            }
+            if (user == true) {
+              my_win_count += 1;
+            }
+            if (comp_win_count == 5 || my_win_count == 5) {
+              if (comp_win_count > my_win_count) {
+                result.textContent += `Game over: C = ${comp_win_count} vs U = ${my_win_count}. => Computer won the game 🤖`;
+              } else {
+                result.textContent += `Game over: C = ${comp_win_count} vs U = ${my_win_count}. => You won the game 🎉`;
+              }
+              buttons.forEach((button) => {
+                button.disabled = true;
+                button.style.backgroundColor = "lightgrey";
+              });
+            } else {
+              result.textContent += `C = ${comp_win_count} vs U = ${my_win_count}.`;
+            }
+          });
+        });
       }
+
       console.log(playGame());
     </script>
   </body>
